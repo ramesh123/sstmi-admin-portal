@@ -36,6 +36,12 @@ export default function Navigation() {
             Volunteer Dashboard
           </button>
         </li>
+        <li>
+          <button
+            onClick={() => navigateTo('/manageusers.html')}
+            className="text-blue-600 hover:underline"
+          >Manage Users</button>
+        </li>
       </ul>
     </nav>
   );
