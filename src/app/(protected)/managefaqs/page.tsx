@@ -240,7 +240,7 @@ const FAQManager = () => {
         headers: { Accept: 'application/json' },
       });
       if (!response.ok) {
-        throw new Error('Failed to fetch devotees');
+        throw new Error('Failed to fetch faqs');
       }
       const data: any[] = await response.json();
       setFaqs(data);
