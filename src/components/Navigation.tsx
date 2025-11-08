@@ -42,6 +42,12 @@ export default function Navigation() {
             className="text-blue-600 hover:underline"
           >Manage Users</button>
         </li>
+        <li>
+          <button
+            onClick={() => navigateTo('/managefaqs.html')}
+            className="text-blue-600 hover:underline"
+          >Manage Faq's</button>
+        </li>
       </ul>
     </nav>
   );
