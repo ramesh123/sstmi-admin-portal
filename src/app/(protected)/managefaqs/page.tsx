@@ -254,21 +254,20 @@ const FAQManager = () => {
 
   const saveFaqsToStorage = async (faqs: any[]) => {
   try {
-    const response = await fetch('/data/faqs', {
+    const response = await fetch('/api/save-faqs', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(faqs),
     });
 
     if (!response.ok) throw new Error('Failed to save FAQs');
+
     setToast({ message: 'FAQs saved successfully!', type: 'success' });
   } catch (err) {
     console.error(err);
     setToast({ message: 'Failed to save FAQs.', type: 'error' });
   }
 };
-
-
 
   const sortData = (data: FAQ[]): FAQ[] => {
     if (!sortConfig.key) return data;
@@ -341,8 +340,6 @@ const FAQManager = () => {
     }
 
     setFaqs(updatedFaqs);
-    await saveFaqsToStorage(updatedFaqs);
-    setIsModalOpen(false);
   };
 
   const handleDelete = async (id: string) => {

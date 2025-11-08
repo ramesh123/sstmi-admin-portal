@@ -168,10 +168,6 @@ export default function LoginPage() {
     router.push('/admin.html');
   };
 
-  // const handleSignUp = () => {
-  //   setToast({ message: 'Sign Up functionality coming soon!', type: 'error' });
-  // };
-
   return (
     <>
       {toast && (
