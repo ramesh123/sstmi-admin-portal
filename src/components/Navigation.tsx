@@ -1,13 +1,22 @@
 // src/components/Navigation.tsx
 'use client';
-import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
+import { useRouter,usePathname } from 'next/navigation';
 
 export default function Navigation() {
   const router = useRouter();
+const pathname = usePathname();
 
   const navigateTo = (path: string) => {
     router.push(path);
   };
+
+  useEffect(() => {
+      const user = sessionStorage.getItem('adminuser');
+      if (!user && pathname!='/login') {
+        router.push('/login');
+      }
+    }, [router, pathname]);
 
   return (
     <nav className="bg-gray-200 p-4 shadow">

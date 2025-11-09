@@ -168,6 +168,13 @@ export default function LoginPage() {
     router.push('/admin.html');
   };
 
+  useEffect(() => {
+      const user = sessionStorage.getItem('adminuser');
+      if (user) {
+        router.push('/admin');
+      }
+    }, [router]);
+
   return (
     <>
       {toast && (
