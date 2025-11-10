@@ -145,7 +145,7 @@ export default function LoginPage() {
       let msg = JSON.parse(data?.body);
       if (data?.statusCode === 200) {
         //let username = getUsernameFromEmail(formData.email);
-        let user = { name: msg?.name, email: formData.email }
+        let user = { name: msg?.name, email: formData.email, roleid: msg?.roleid }
         sessionStorage.setItem('adminuser', JSON.stringify(user));
         sessionStorage.setItem('token', 'token');
         setToast({ message: msg?.message, type: 'success' });

@@ -1,22 +1,29 @@
 // src/components/Navigation.tsx
 'use client';
-import { useEffect } from 'react';
-import { useRouter,usePathname } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { useRouter, usePathname } from 'next/navigation';
 
 export default function Navigation() {
+  const [roleCond, setRoleCond] = useState(true);
   const router = useRouter();
-const pathname = usePathname();
+  const pathname = usePathname();
 
   const navigateTo = (path: string) => {
     router.push(path);
   };
 
+
   useEffect(() => {
-      const user = sessionStorage.getItem('adminuser');
-      if (!user && pathname!='/login') {
-        router.push('/login');
-      }
-    }, [router, pathname]);
+    const storedUser = sessionStorage.getItem('adminuser');
+    if (!storedUser && pathname !== '/login') {
+      router.push('/login');
+    } else if (storedUser) {
+      const user = JSON.parse(storedUser);
+      const rolechk = user.roleid;
+      if (rolechk === 3) setRoleCond(false);
+    }
+  }, [router, pathname]);
+
 
   return (
     <nav className="bg-gray-200 p-4 shadow">
@@ -45,18 +52,18 @@ const pathname = usePathname();
             Volunteer Dashboard
           </button>
         </li>
-        <li>
+        {roleCond && <li>
           <button
             onClick={() => navigateTo('/manageusers.html')}
             className="text-blue-600 hover:underline"
           >Manage Users</button>
-        </li>
-        <li>
+        </li>}
+        {roleCond && <li>
           <button
             onClick={() => navigateTo('/managefaqs.html')}
             className="text-blue-600 hover:underline"
           >Manage Faq's</button>
-        </li>
+        </li>}
       </ul>
     </nav>
   );
