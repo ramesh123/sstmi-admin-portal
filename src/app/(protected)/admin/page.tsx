@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import nextDynamic from 'next/dynamic';
 import { Box, Tabs, Tab, Typography } from '@mui/material';
 import { ToastContainer } from 'react-toastify';
@@ -42,6 +42,7 @@ function TabPanel(props: TabPanelProps) {
 
 function AdminPage() {
   const [currentTab, setCurrentTab] = useState(0);
+  const [roleCond, setRoleCond] = useState(1);
   const [selectedDevotee, setSelectedDevotee] = useState<{
     Name: string;
     Email: string;
@@ -68,19 +69,27 @@ function AdminPage() {
     console.log('New devotee name:', name);
   };
 
+  useEffect(() => {
+    const storedUser = sessionStorage.getItem('adminuser');
+    if (storedUser) {
+      const user = JSON.parse(storedUser);
+      setRoleCond(user.roleid);
+    }
+  }, []);
+
   return (
     <div className="p-4">
       <Box sx={{ width: '100%', bgcolor: 'background.paper' }}>
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-          <Tabs 
-            value={currentTab} 
-            onChange={handleTabChange} 
+          <Tabs
+            value={currentTab}
+            onChange={handleTabChange}
             aria-label="admin tabs"
             variant="scrollable"
             scrollButtons="auto"
             allowScrollButtonsMobile
             sx={{
-              '& .MuiTab-root': { 
+              '& .MuiTab-root': {
                 minWidth: 120,
                 '@media (min-width: 600px)': {
                   minWidth: 160
@@ -88,15 +97,15 @@ function AdminPage() {
               }
             }}
           >
-            <Tab label="Find Devotee" />
-            <Tab label="Transactions" />
-            <Tab label="Tax Letters" />
-            <Tab label="Edit Transactions" />
-            <Tab label="Backend Utilities" />
+            {(roleCond===1 || roleCond===2) && <Tab label="Find Devotee" />}
+            {(roleCond===1 || roleCond===2) && <Tab label="Transactions" />}
+            {(roleCond===1) && <Tab label="Tax Letters" />}
+            {(roleCond===1) && <Tab label="Edit Transactions" />}
+            {(roleCond===1) && <Tab label="Backend Utilities" />}
           </Tabs>
         </Box>
 
-        <TabPanel value={currentTab} index={0}>
+        {(roleCond===1 || roleCond===2) && <TabPanel value={currentTab} index={0}>
           <Box sx={{ maxWidth: 600, mx: 'auto', mt: 4 }}>
             <Typography variant="h6" gutterBottom>
               Search Devotee
@@ -109,7 +118,7 @@ function AdminPage() {
 
             {selectedDevotee && (
               <Box sx={{ mt: 4 }}>
-                <Transactions 
+                <Transactions
                   devoteeFilter={{
                     DevoteeName: selectedDevotee.Name,
                     DevoteeEmail: selectedDevotee.Email
@@ -118,25 +127,25 @@ function AdminPage() {
               </Box>
             )}
           </Box>
-        </TabPanel>
-        
-        <TabPanel value={currentTab} index={1}>
+        </TabPanel>}
+
+        {(roleCond===1 || roleCond===2) && <TabPanel value={currentTab} index={1}>
           <Transactions />
-        </TabPanel>
-        
-        <TabPanel value={currentTab} index={2}>
+        </TabPanel>}
+
+        {(roleCond===1) && <TabPanel value={currentTab} index={2}>
           <SingleTaxLetter />
-        </TabPanel>
-        
-        <TabPanel value={currentTab} index={3}>
+        </TabPanel>}
+
+        {(roleCond===1) && <TabPanel value={currentTab} index={3}>
           <EditTransactions />
-        </TabPanel>
-        <TabPanel value={currentTab} index={4}>
+        </TabPanel>}
+        {(roleCond===1) && <TabPanel value={currentTab} index={4}>
           <BackendUtilities />
-        </TabPanel>
+        </TabPanel>}
       </Box>
-      
-      <ToastContainer 
+
+      <ToastContainer
         position="top-right"
         autoClose={5000}
         hideProgressBar={false}
